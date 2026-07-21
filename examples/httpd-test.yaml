@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: httpd-test
+  name: httpd-test
+spec:
+  containers:
+  - image: httpd
+    name: httpd-test
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always

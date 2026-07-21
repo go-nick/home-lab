@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: linkding-demo
+  name: linkding-demo
+  namespace: demo
+spec:
+  replicas: 20
+  selector:
+    matchLabels:
+      app: linkding-demo
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 50%
+      maxUnavailable: 25%
+  minReadySeconds: 3
+  progressDeadlineSeconds: 45
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: linkding-demo
+    spec:
+      containers:
+      - image: sissbruecker/linkding:1.30.0
+        name: linkding
+        ports: 
+          - containerPort: 9090
+        readinessProbe: 
+          httpGet:
+            path: /
+            port: 9090
+          initialDelaySeconds: 2
