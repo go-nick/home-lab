@@ -50,12 +50,19 @@ sudo firewall-cmd --permanent --add-port=10250/tcp
 sudo firewall-cmd --permanent --remove-port=1025-65535/tcp
 sudo firewall-cmd --permanent --remove-port=1025-65535/udp
 
+# this is needed because of net.bridge.bridge-nf-call-iptables = 1
+# let's kube-proxy's iptables rules actually apply to bridged pod traffic.
+# side-effect -> also exposes ordinary pod-to-pod bridge traffic to firewalld's FOWARD chain.
+# firwalld's default zone policy = don't trust that bridge interface!
+sudo firewall-cmd --zone=trusted --change-interface=<net_interface_here> --permanent
+
 sudo firewall-cmd --reload
 
 sudo firewall-cmd --list-all
 sudo firewall-cmd --list-services
 sudo firewall-cmd --permanent --list-ports
 sudo firewall-cmd --list-ports
+sudo firewall-cmd --zone=trusted --list-interfaces
 ```
 
 Just some good hygiene on firewall 
