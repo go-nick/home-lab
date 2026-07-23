@@ -12,9 +12,15 @@ spec:
       labels:
         app: linkding
     spec:
+      securityContext:
+        fsGroup: 33    # group ID
+        runAsUser: 33  # user ID
+        runAsGroup: 33 # group ID
       containers:
         - name: linkding
           image: sissbruecker/linkding:1.31.0
+          securityContext:
+            allowPrivilegeEscalation: false
           volumeMounts:
             - name: linkding-volume
               mountPath: /etc/linkding/data
